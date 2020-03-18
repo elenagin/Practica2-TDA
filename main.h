@@ -1,12 +1,12 @@
 
-#ifndef pr2_h
-#define pr2_h
+#ifndef main_h
+#define main_h
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
-#include "test2.h"
-
+#include "graph_creator.h"
+#include "path_planning_algorithm.h"
 #endif
