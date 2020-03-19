@@ -6,6 +6,6 @@ int main(){
       printf("Yeii\n");
     }
     //cargar grafo con valores del archivo
+    //load_graph();
     //encontrar ruta optima
-
 }

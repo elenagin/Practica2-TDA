@@ -10,7 +10,7 @@ typedef struct Node
 
 node * new_node(int id);
 node * new_connection(node **root, int id);
-
+void load_graph(node * node);
 
 int create_graph (){
 	node *root, *temp;
@@ -65,4 +65,25 @@ node * new_connection(node **root, int id)
 	node_E -> nextn[1]=node_D;
 	node_E -> nextn[2]=node_C;
 
+	printf("A\n");
+	load_graph(node_A);
+	printf("B\n");
+	load_graph(node_B);
+	printf("C\n");
+	load_graph(node_C);
+	printf("D\n");
+	load_graph(node_D);
+	printf("E\n");
+	load_graph(node_E);
+	return node_A;
+}
+
+void load_graph(node * node){
+	for(int i=0;i<=3;i++){
+		if (node->nextn[i] != NULL) {
+			printf("conectado a %d\n", node->nextn[i]->id);
+		}else{
+			printf("No conectado\n");
+		}
+	}
 }
