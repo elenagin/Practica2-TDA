@@ -2,10 +2,10 @@
 
 int main(){
     //crea grafo (casita)
-    if(create_graph()==0){
+    node * root;
+    root=create_graph();
       printf("Yeii\n");
-    }
-    //cargar grafo con valores del archivo
-    //load_graph();
     //encontrar ruta optima
+    start(root);
+
 }
