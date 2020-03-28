@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+//Tratamiento en bits del bitwise
+typedef struct Node
+{
+	int id;
+	float cost;
+	struct Node * nextn[4];
+	uint8_t c_state;
+}node;
+
+node * new_node(int id);
+node * new_map();
+
+int main ()
+{
+	node *Inicio, *temp;
+	int c=1, id=12;
+	//Inicio = new_node('c');
+	//printf("%d\n", Inicio->id);
+
+
+	Inicio = new_map();
+
+	temp = Inicio;
+
+	/*printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
+	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
+	printf("\n\n");
+
+	temp= temp -> nextn[1];
+	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
+	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
+	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
+	printf("%d   %f\n", temp -> nextn[4] -> id, temp -> nextn[4] -> cost);
+	printf("\n\n");
+	
+	temp= temp -> nextn[4];
+	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
+	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
+	printf("\n\n");
+
+	temp= temp -> nextn[2];
+	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
+	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
+	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
+	printf("\n\n");
+
+	temp= temp -> nextn[3];
+	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
+	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
+	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
+	printf("\n\n");*/
+}
+
+node * new_node(int id)
+{
+	//printf("%d", id);
+	int i;
+	node *temp;
+	temp =(node*)malloc(sizeof(node));
+	temp->id = id;
+	temp-> c_state = 0;
+
+	temp -> nextn[1] = NULL;
+	temp -> nextn[2] = NULL;
+	temp -> nextn[3] = NULL;
+	temp -> nextn[4] = NULL;
+	return temp;
+}
+
+node * new_map()
+{
+	node *nodeA, *nodeB, *nodeC, *nodeD, *nodeE, *temp;
+	
+	nodeA = new_node(1);
+	nodeB = new_node(2);
+	nodeC = new_node(3);
+	nodeD = new_node(4);
+	nodeE = new_node(5);
+
+	nodeA -> nextn[1] = nodeB;
+	nodeA -> nextn[1] -> cost = 6;
+	nodeA -> nextn[2] = nodeD;
+	nodeA -> nextn[2] -> cost = 1;
+
+	nodeB-> nextn[1] = nodeA;
+	nodeB-> nextn[1] -> cost = 6;
+	nodeB-> nextn[2] = nodeD;
+	nodeB-> nextn[2] -> cost = 2;
+	nodeB-> nextn[3] = nodeE;
+	nodeB-> nextn[3] -> cost = 2;
+	nodeB-> nextn[4] = nodeC;
+	nodeB-> nextn[4] -> cost = 5;
+
+	nodeC-> nextn[1] = nodeB;
+	nodeC-> nextn[1] -> cost = 5;
+	nodeC-> nextn[2] = nodeE;
+	nodeC-> nextn[2] -> cost = 5;
+
+	nodeD -> nextn[1] = nodeA;
+	nodeD-> nextn[1] -> cost = 1;
+	nodeD-> nextn[2] = nodeB;
+	nodeD-> nextn[2] -> cost = 2;
+	nodeD-> nextn[3] = nodeE;
+	nodeD-> nextn[3] -> cost = 1;
+
+	nodeE -> nextn[1] = nodeB;
+	nodeE-> nextn[1] -> cost = 2;
+	nodeE-> nextn[2] = nodeC;
+	nodeE-> nextn[2] -> cost = 5;
+	nodeE-> nextn[3] = nodeD;
+	nodeE-> nextn[3] -> cost = 1;
+	
+	temp = nodeA;
+
+
+
+	return nodeA;
+
+}
