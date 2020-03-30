@@ -7,53 +7,36 @@
 typedef struct Node
 {
 	int id;
-	float cost;
+	float cost[4];
 	struct Node * nextn[4];
 	uint8_t c_state;
 }node;
 
+typedef struct Coord
+{	
+	float Acost;
+	int idT;
+	int flag;
+		
+}coord;
+
 node * new_node(int id);
-node * new_map();
+node * new_map(int *no_nodes);
+void road(node *Inicio, int no_nodes);
 
 int main ()
 {
 	node *Inicio, *temp;
-	int c=1, id=12;
+	int no_nodes;
 	//Inicio = new_node('c');
 	//printf("%d\n", Inicio->id);
 
 
-	Inicio = new_map();
-
-	temp = Inicio;
-
-	/*printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
-	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
-	printf("\n\n");
-
-	temp= temp -> nextn[1];
-	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
-	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
-	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
-	printf("%d   %f\n", temp -> nextn[4] -> id, temp -> nextn[4] -> cost);
-	printf("\n\n");
+	Inicio = new_map(&no_nodes);
+	road(Inicio, no_nodes);
 	
-	temp= temp -> nextn[4];
-	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
-	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
-	printf("\n\n");
-
-	temp= temp -> nextn[2];
-	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
-	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
-	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
-	printf("\n\n");
-
-	temp= temp -> nextn[3];
-	printf("%d   %f\n", temp -> nextn[1] -> id, temp -> nextn[1] -> cost);
-	printf("%d   %f\n", temp -> nextn[2] -> id, temp -> nextn[2] -> cost);
-	printf("%d   %f\n", temp -> nextn[3] -> id, temp -> nextn[3] -> cost);
-	printf("\n\n");*/
+	
+	
 }
 
 node * new_node(int id)
@@ -72,9 +55,10 @@ node * new_node(int id)
 	return temp;
 }
 
-node * new_map()
+node * new_map(int *no_nodes)
 {
 	node *nodeA, *nodeB, *nodeC, *nodeD, *nodeE, *temp;
+	*no_nodes= 5;
 	
 	nodeA = new_node(1);
 	nodeB = new_node(2);
@@ -83,42 +67,78 @@ node * new_map()
 	nodeE = new_node(5);
 
 	nodeA -> nextn[1] = nodeB;
-	nodeA -> nextn[1] -> cost = 6;
+	nodeA -> cost[1] = 6;
 	nodeA -> nextn[2] = nodeD;
-	nodeA -> nextn[2] -> cost = 1;
+	nodeA -> cost[2] = 1;
 
 	nodeB-> nextn[1] = nodeA;
-	nodeB-> nextn[1] -> cost = 6;
+	nodeB-> cost[1] = 6;
 	nodeB-> nextn[2] = nodeD;
-	nodeB-> nextn[2] -> cost = 2;
+	nodeB-> cost[2] = 2;
 	nodeB-> nextn[3] = nodeE;
-	nodeB-> nextn[3] -> cost = 2;
+	nodeB-> cost[3] = 2;
 	nodeB-> nextn[4] = nodeC;
-	nodeB-> nextn[4] -> cost = 5;
+	nodeB-> cost[4] = 5;
 
 	nodeC-> nextn[1] = nodeB;
-	nodeC-> nextn[1] -> cost = 5;
+	nodeC-> cost[1] = 5;
 	nodeC-> nextn[2] = nodeE;
-	nodeC-> nextn[2] -> cost = 5;
+	nodeC-> cost[2] = 5;
 
 	nodeD -> nextn[1] = nodeA;
-	nodeD-> nextn[1] -> cost = 1;
+	nodeD-> cost[1] = 1;
 	nodeD-> nextn[2] = nodeB;
-	nodeD-> nextn[2] -> cost = 2;
+	nodeD-> cost[2] = 2;
 	nodeD-> nextn[3] = nodeE;
-	nodeD-> nextn[3] -> cost = 1;
+	nodeD-> cost[3] = 1;
 
 	nodeE -> nextn[1] = nodeB;
-	nodeE-> nextn[1] -> cost = 2;
+	nodeE-> cost[1] = 2;
 	nodeE-> nextn[2] = nodeC;
-	nodeE-> nextn[2] -> cost = 5;
+	nodeE-> cost[2] = 5;
 	nodeE-> nextn[3] = nodeD;
-	nodeE-> nextn[3] -> cost = 1;
+	nodeE-> cost [3] = 1;
 	
 	temp = nodeA;
-
-
-
 	return nodeA;
+
+}
+
+void road(node *Inicio, int no_nodes)
+{
+	int i;
+	node *temp;
+	coord Table[no_nodes+1][no_nodes+1], cordTemp, null;
+
+	null.Acost= 999;
+	null.idT = 999;
+	temp = Inicio;
+	cordTemp.Acost = 0;
+	cordTemp.idT = temp -> id;
+	cordTemp.flag = 1;
+	Table[temp->id][1] = cordTemp; 
+	for(i=1 ; i<=no_nodes ; i++)
+	{
+		if(temp -> nextn[i] != NULL)
+		{
+			cordTemp.Acost = cordTemp.Acost + temp -> cost[i];
+			cordTemp.idT = temp -> id;
+			Table[temp-> nextn[i]->id][1] = cordTemp;
+			printf("%f\n", cordTemp.Acost);
+			cordTemp.Acost = 0;
+			cordTemp.idT = 0;
+		}else{
+
+			Table[i][1] = null;
+			}
+
+	}
+
+	for(i=1 ; i<=no_nodes ; i++)
+	{
+		printf("%f      %d\n", Table[i][1].Acost, Table[i][1].idT);
+	}
+
+	
 
 }
