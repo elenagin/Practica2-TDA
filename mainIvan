@@ -98,9 +98,9 @@ node * new_map(int *no_nodes)
 	nodeE-> cost[2] = 5;
 	nodeE-> nextn[3] = nodeD;
 	nodeE-> cost [3] = 1;
-	
+
 	temp = nodeA;
-	return nodeA;
+	return nodeB;
 
 }
 
@@ -109,30 +109,44 @@ void road(node *Inicio, int no_nodes)
 	int i;
 	node *temp;
 	coord Table[no_nodes+1][no_nodes+1], cordTemp, null;
-
-	null.Acost= 999;
-	null.idT = 999;
+	null.Acost= 9999;
+	null.idT = 9999;
 	temp = Inicio;
+
+	//temp = temp-> nextn[1];
+
 	cordTemp.Acost = 0;
 	cordTemp.idT = temp -> id;
 	cordTemp.flag = 1;
+	
+	
 	Table[temp->id][1] = cordTemp; 
+
+
+
 	for(i=1 ; i<=no_nodes ; i++)
 	{
-		if(temp -> nextn[i] != NULL)
+		if(Table[i][1].idT != 9999)
 		{
-			cordTemp.Acost = cordTemp.Acost + temp -> cost[i];
-			cordTemp.idT = temp -> id;
-			Table[temp-> nextn[i]->id][1] = cordTemp;
-			printf("%f\n", cordTemp.Acost);
-			cordTemp.Acost = 0;
-			cordTemp.idT = 0;
-		}else{
-
-			Table[i][1] = null;
+		
+			if(temp -> nextn[i] != NULL)
+			{
+				cordTemp.Acost = Table[temp->id][1].Acost + temp -> cost[i];
+				cordTemp.idT = temp -> id;
+				Table[temp-> nextn[i]->id][1] = cordTemp;
+				cordTemp.Acost = 0;
+				cordTemp.idT = 0;
 			}
-
+			if(Table[i][1].Acost >= Table[i-1][1].Acost && Table[i-1][1].Acost != 0 )
+			{
+				Table[i][1] = Table[i-1][1];
+			}
+		}
 	}
+
+
+
+
 
 	for(i=1 ; i<=no_nodes ; i++)
 	{
