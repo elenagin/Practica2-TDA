@@ -97,13 +97,13 @@ node * new_map(int *no_nodes)
 	nodeE-> cost [3] = 1;
 
 	temp = nodeA;
-	return nodeE;
+	return nodeB;
 
 }
 
 void road(node *Inicio, int no_nodes)
 {
-	int i,c,visited[no_nodes];
+	int i,c,visited[no_nodes+1], idm;
 	float mincost=0, minimum;
 	node *temp;
 	coord Table[no_nodes+1][no_nodes+1], cordTemp, null;
@@ -125,25 +125,20 @@ void road(node *Inicio, int no_nodes)
 	cordTemp.idT = temp -> id;
 
 	Table[temp->id][1] = cordTemp;
-	visited[temp->id]=1;
-
+	
 
 	for(i=1 ; i<=no_nodes ; i++)
 	{
-			if(temp -> nextn[i] != NULL)
-			{
+				if(temp -> nextn[i] != NULL)
+				{
+				
 					cordTemp.Acost = Table[temp->id][1].Acost + temp -> cost[i];
 					cordTemp.idT = temp -> id;
 					Table[temp-> nextn[i]->id][1] = cordTemp;
 					cordTemp.Acost = 0;
 					cordTemp.idT = 0;
-			}else{
-				//Table[temp->nextn[i]->id][1].idT = -1; 
 				}
-
-
-
-
+			
 			//if(Table[i][1].Acost >= Table[i-1][1].Acost && Table[i-1][1].Acost != 0 )
 			//{
 			//	Table[i][1] = Table[i-1][1];
@@ -151,7 +146,7 @@ void road(node *Inicio, int no_nodes)
 	}
 
 
-
+	visited[temp->id]=1;
 	minimum = Table[0][1].Acost;
 	for (c = 1; c < no_nodes; c++)
     {
@@ -159,11 +154,14 @@ void road(node *Inicio, int no_nodes)
 		{
 			if (Table[c][1].Acost < minimum)
 			{
-			minimum = Table[c][1].Acost;
+				minimum = Table[c][1].Acost;
+				idm = c;
 			}
 		}
     }
 	printf("%f\n", minimum);
+	visited[idm]=1;
+
 
 	for(i=1 ; i<=no_nodes ; i++)
 	{
