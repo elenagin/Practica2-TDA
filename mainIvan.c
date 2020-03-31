@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
-
+//Tratamiento en bits del bitwise
 typedef struct Node
 {
 	int id;
@@ -16,7 +16,7 @@ typedef struct Coord
 {	
 	float Acost;
 	int idT;
-	int flag;		
+		
 }coord;
 
 node * new_node(int id);
@@ -28,14 +28,18 @@ int main ()
 	node *Inicio, *temp;
 	int no_nodes;
 
+
 	Inicio = new_map(&no_nodes);
 	road(Inicio, no_nodes);
+	
+	
+	
 }
 
 node * new_node(int id)
 {
+	//printf("%d", id);
 	int i;
-
 	node *temp;
 	temp =(node*)malloc(sizeof(node));
 	temp->id = id;
@@ -93,43 +97,73 @@ node * new_map(int *no_nodes)
 	nodeE-> cost [3] = 1;
 
 	temp = nodeA;
-	return nodeA;
+	return nodeE;
+
 }
 
 void road(node *Inicio, int no_nodes)
 {
-	int i;
-
+	int i,c,visited[no_nodes];
+	float mincost=0, minimum;
 	node *temp;
 	coord Table[no_nodes+1][no_nodes+1], cordTemp, null;
 	null.Acost= 9999;
 	null.idT = 9999;
 	temp = Inicio;
 
+	for(i=0 ; i<=no_nodes ; i++)
+	{
+		visited[i]=0;
+	}
+
+	for(i=0 ; i<=no_nodes; i++)
+	{
+		Table[i][1] = null;
+	}
+
 	cordTemp.Acost = 0;
 	cordTemp.idT = temp -> id;
-	cordTemp.flag = 1;	
+
 	Table[temp->id][1] = cordTemp;
+	visited[temp->id]=1;
+
 
 	for(i=1 ; i<=no_nodes ; i++)
 	{
-		if(Table[i][1].idT != 9999)
-		{
-		
 			if(temp -> nextn[i] != NULL)
 			{
-				cordTemp.Acost = Table[temp->id][1].Acost + temp -> cost[i];
-				cordTemp.idT = temp -> id;
-				Table[temp-> nextn[i]->id][1] = cordTemp;
-				cordTemp.Acost = 0;
-				cordTemp.idT = 0;
-			}
-			if(Table[i][1].Acost >= Table[i-1][1].Acost && Table[i-1][1].Acost != 0 )
+					cordTemp.Acost = Table[temp->id][1].Acost + temp -> cost[i];
+					cordTemp.idT = temp -> id;
+					Table[temp-> nextn[i]->id][1] = cordTemp;
+					cordTemp.Acost = 0;
+					cordTemp.idT = 0;
+			}else{
+				//Table[temp->nextn[i]->id][1].idT = -1; 
+				}
+
+
+
+
+			//if(Table[i][1].Acost >= Table[i-1][1].Acost && Table[i-1][1].Acost != 0 )
+			//{
+			//	Table[i][1] = Table[i-1][1];
+			//}
+	}
+
+
+
+	minimum = Table[0][1].Acost;
+	for (c = 1; c < no_nodes; c++)
+    {
+		if(visited[c]==0)
+		{
+			if (Table[c][1].Acost < minimum)
 			{
-				Table[i][1] = Table[i-1][1];
+			minimum = Table[c][1].Acost;
 			}
 		}
-	}
+    }
+	printf("%f\n", minimum);
 
 	for(i=1 ; i<=no_nodes ; i++)
 	{
